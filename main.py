@@ -171,17 +171,31 @@ def start_game():
         winner = victory_for(board)
     
     if winner == 'X':
-        print("\n\tThe winner is: the machine")
+        winner = 'X'
     elif winner == 'O':
-        print("\n\tThe winner is: the user!")
-    else: 
-        print("\n\tThis is a tie")
+        winner = 'O'
+
+    return winner
 
 
 print("\n\t============== Start the game tic-tac-toe ==============\n")
 
+tie, player, machine = 0, 0, 0
+
 while True:
-    start_game()
+    result = start_game()
+
+    if result == 'X':
+        machine += 1
+        print("\n\tThe winner is: the machine")
+    elif result == 'O':
+        player += 1
+        print("\n\tThe winner is: the player!")
+    else:
+        tie += 1 
+        print("\n\tThis is a tie")
+
+    print("\n\tPlayer (O) : " + str(player) + "\t\tTie : " + str(tie) + "\t\tMachine (X) : " + str(machine))
 
     while True:
         answer = input("\n\t¿Do you want to continue playing? (y / n): ").strip().lower()
