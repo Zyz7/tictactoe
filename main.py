@@ -104,15 +104,19 @@ def enter_move(board):
 
 def draw_move(board):
     # The function draws the movement of the machine and updates the board.
-    prioritize = make_list_of_winning_square(board)
+    prioritize = [1, 3, 5, 7, 9]
+    winning = make_list_of_winning_square(board)
     free_fields = make_list_of_free_fields(board)
 
     if len(free_fields) > 0:
         print("\n\tThe machine enters its movement: ")
-
-        found = [n for n in prioritize if n in free_fields]
-        if len(found) > 0:
-            move = choice(found)
+        found_winning = [n for n in winning if n in free_fields]
+        found_prioritize = [n for n in prioritize if n in free_fields]
+        
+        if len(found_winning) > 0:
+            move = choice(found_winning)
+        elif len(found_prioritize):
+            move = choice(found_prioritize)
         else:
             move = choice(free_fields)
 
