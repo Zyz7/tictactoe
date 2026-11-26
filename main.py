@@ -30,8 +30,9 @@ def make_list_of_free_fields(board):
     return free_fields
 
 
-def winning_square(board):
-    #
+def make_list_of_winning_square(board):
+    # the function accepts the current state of the board and checks if there are 2 in line, 
+    # saves the free boxes and returns them in a list
     numbers = []
     movements = []
     
@@ -68,7 +69,7 @@ def winning_square(board):
     elif board[1][1] == board[2][0]:
         movements.append(board[0][2])
 
-    numbers = [z for z  in movements if isinstance(z, int)]
+    numbers = [z for z in movements if isinstance(z, int)]
     return list(set(numbers))
     
 
@@ -103,8 +104,7 @@ def enter_move(board):
 
 def draw_move(board):
     # The function draws the movement of the machine and updates the board.
-    # prioritize = [1, 3, 5, 7, 9]
-    prioritize = winning_square(board)
+    prioritize = make_list_of_winning_square(board)
     free_fields = make_list_of_free_fields(board)
 
     if len(free_fields) > 0:
@@ -112,10 +112,8 @@ def draw_move(board):
 
         found = [n for n in prioritize if n in free_fields]
         if len(found) > 0:
-            print(winning_square(board))
             move = choice(found)
         else:
-            print(winning_square(board))
             move = choice(free_fields)
 
         for i, row in enumerate(board):
@@ -152,25 +150,46 @@ def victory_for(board):
     return winner
 
 
+def start_game():
+    winner = None
+    board = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    display_board(board)
+
+    for _ in range(4):
+        enter_move(board)
+        winner = victory_for(board)
+        if winner:
+            break    
+        
+        draw_move(board)
+        winner = victory_for(board)
+        if winner:
+            break
+
+    if not winner:
+        enter_move(board)
+        winner = victory_for(board)
+    
+    if winner == 'X':
+        print("\n\tThe winner is: the machine")
+    elif winner == 'O':
+        print("\n\tThe winner is: the user!")
+    else: 
+        print("\n\tThis is a tie")
+
+
 print("\n\t============== Start the game tic-tac-toe ==============\n")
 
-board = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-display_board(board)
+while True:
+    start_game()
 
-for i in range(9):
-    winner = victory_for(board)
-
-    if winner:
-        break    
-    enter_move(board)
-    draw_move(board)
+    while True:
+        answer = input("\n\t¿Do you want to continue playing? (y / n): ").strip().lower()
+        if answer in ['y', 'n']:
+            break
+        print("\n\tPlease enter only 'y' or 'n'")
     
-if winner == 'X':
-    print("\n\tThe winner is: the machine")
-elif winner == 'O':
-    print("\n\tThe winner is: the user!")
-else: 
-    print("\n\tThis is a tie")
-        
+    if answer == 'n':
+        break
 
 print("\n\t============== End of the game tic-tac-toe ==============\n")
